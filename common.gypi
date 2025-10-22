@@ -683,6 +683,103 @@
           }],
         ],
       }],
+      ['OS=="ios"', {
+        'defines': ['_DARWIN_USE_64_BIT_INODE=1'],
+        'xcode_settings': {
+          'ALWAYS_SEARCH_USER_PATHS': 'NO',
+          'GCC_CW_ASM_SYNTAX': 'NO',                # No -fasm-blocks
+          'GCC_DYNAMIC_NO_PIC': 'NO',               # No -mdynamic-no-pic
+                                                    # (Equivalent to -fPIC)
+          'GCC_ENABLE_CPP_EXCEPTIONS': 'NO',        # -fno-exceptions
+          'GCC_ENABLE_CPP_RTTI': 'NO',              # -fno-rtti
+          'GCC_ENABLE_PASCAL_STRINGS': 'NO',        # No -mpascal-strings
+          'GCC_STRICT_ALIASING': 'NO',              # -fno-strict-aliasing
+          'PREBINDING': 'NO',                       # No -Wl,-prebind
+          'USE_HEADERMAP': 'NO',
+        },
+        'target_conditions': [
+          ['_toolset=="host"', {
+            'xcode_settings': {
+              'SDKROOT': 'macosx',
+              'MACOSX_DEPLOYMENT_TARGET': '13.5',   # Use macOS deployment target for host tools
+              'WARNING_CFLAGS': [
+                '-Wall',
+                '-Wendif-labels',
+                '-W',
+                '-Wno-unused-parameter',
+              ],
+            },
+            'conditions': [
+              ['host_arch=="arm64"', {
+                'xcode_settings': {'ARCHS': ['arm64']},
+              }],
+              ['host_arch=="x64"', {
+                'xcode_settings': {'ARCHS': ['x86_64']},
+              }],
+            ],
+          }, {
+            'xcode_settings': {
+              'IPHONEOS_DEPLOYMENT_TARGET': '14.0', # -miphoneos-version-min=14.0
+              'WARNING_CFLAGS': [
+                '-Wall',
+                '-Wendif-labels',
+                '-W',
+                '-Wno-unused-parameter',
+                '-Wno-enum-constexpr-conversion',
+              ],
+            },
+            'conditions': [
+              ['iossim!="true" and target_arch in "arm64 arm armv7s"', {
+                'xcode_settings': {
+                  'SDKROOT': 'iphoneos',
+                  'ENABLE_BITCODE': 'YES',
+                  'OTHER_CFLAGS': [
+                    '-fembed-bitcode'
+                  ],
+                  'OTHER_CPLUSPLUSFLAGS': [
+                    '-fembed-bitcode'
+                  ],
+                }
+              }, {
+                'xcode_settings': {
+                  'SDKROOT': 'iphonesimulator',
+                }
+              }],
+            ],
+          }],
+          ['_type!="static_library"', {
+            'xcode_settings': {
+              'OTHER_LDFLAGS': [
+                '-Wl,-search_paths_first',
+              ],
+            },
+          }],
+        ],
+        'conditions': [
+          ['target_arch=="ia32"', {
+            'xcode_settings': {'ARCHS': ['i386']},
+          }],
+          ['target_arch=="x64"', {
+            'xcode_settings': {'ARCHS': ['x86_64']},
+          }],
+          [ 'target_arch=="arm64"', {
+            'xcode_settings': {'ARCHS': ['arm64']},
+          }],
+          [ 'target_arch=="arm"', {
+            'xcode_settings': {'ARCHS': ['armv7']},
+          }],
+          [ 'target_arch=="armv7s"', {
+            'xcode_settings': {'ARCHS': ['armv7s']},
+          }],
+          ['clang==1', {
+            'xcode_settings': {
+              'GCC_VERSION': 'com.apple.compilers.llvm.clang.1_0',
+              'CLANG_CXX_LANGUAGE_STANDARD': 'gnu++20',  # -std=gnu++20
+              'CLANG_CXX_LIBRARY': 'libc++',
+            },
+          }],
+        ],
+      }],
       ['OS=="freebsd"', {
         'ldflags': [
           '-Wl,--export-dynamic',
