@@ -337,7 +337,7 @@
         ],
       },
     }],
-    [ 'coverage=="true" and node_shared=="false" and OS in "mac freebsd linux openharmony"', {
+    [ 'coverage=="true" and node_shared=="false" and OS in "mac ios freebsd linux openharmony"', {
       'cflags!': [ '-O3' ],
       'ldflags': [ '--coverage',
                    '-g',

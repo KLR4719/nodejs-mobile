@@ -108,7 +108,7 @@
         'obj_dir%': '<(PRODUCT_DIR)/obj.target',
         'v8_base': '<(PRODUCT_DIR)/obj.target/tools/v8_gypfiles/libv8_snapshot.a',
       }],
-      ['OS=="mac"', {
+      ['OS=="mac" or OS == "ios"', {
         'obj_dir%': '<(PRODUCT_DIR)/obj.target',
         'v8_base': '<(PRODUCT_DIR)/libv8_snapshot.a',
       }],
@@ -227,7 +227,7 @@
             # increase performance, number from experimentation
             'cflags': [ '-qINLINE=::150:100000' ]
           }],
-          ['OS!="mac" and OS!="win" and OS!="zos"', {
+          ['OS!="mac" and OS!="ios" and OS!="win" and OS!="zos"', {
             # -fno-omit-frame-pointer is necessary for the --perf_basic_prof
             # flag to work correctly. perf(1) gets confused about JS stack
             # frames otherwise, even with --call-graph dwarf.
@@ -387,7 +387,7 @@
       [ 'target_arch=="arm64"', {
         'msvs_configuration_platform': 'arm64',
       }],
-      ['asan == 1 and OS != "mac" and OS != "zos"', {
+      ['asan == 1 and OS != "mac" and OS != "ios" and OS != "zos"', {
         'cflags+': [
           '-fno-omit-frame-pointer',
           '-fsanitize=address',
@@ -415,7 +415,7 @@
           }],
         ],
       }],
-      ['ubsan == 1 and OS != "mac" and OS != "zos"', {
+      ['ubsan == 1 and OS != "mac" and OS != "ios" and OS != "zos"', {
         'cflags+': [
           '-fno-omit-frame-pointer',
           '-fsanitize=undefined',
@@ -424,7 +424,7 @@
         'cflags!': [ '-fno-omit-frame-pointer' ],
         'ldflags': [ '-fsanitize=undefined' ],
       }],
-      ['ubsan == 1 and OS == "mac"', {
+      ['ubsan == 1 and (OS == "mac" or OS == "ios")', {
         'xcode_settings': {
           'OTHER_CFLAGS+': [
             '-fno-omit-frame-pointer',

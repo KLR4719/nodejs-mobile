@@ -971,7 +971,8 @@
           ],
           'defines': [ 'HAVE_SQLITE=1' ],
         }],
-        [ 'OS in "linux freebsd mac solaris openharmony" and '
+        # nodejs-mobile patch to mention iOS
+        [ 'OS in "linux freebsd mac ios solaris openharmony" and '
           'target_arch=="x64" and '
           'node_target_type=="executable"', {
           'defines': [ 'NODE_ENABLE_LARGE_CODE_PAGES=1' ],
@@ -1381,7 +1382,8 @@
         [ 'node_shared_libuv=="false"', {
           'dependencies': [ 'deps/uv/uv.gyp:libuv#host' ],
         }],
-        [ 'OS in "linux mac openharmony"', {
+        # nodejs-mobile patch: add ios
+        [ 'OS in "linux mac ios openharmony"', {
           'defines': ['NODE_JS2C_USE_STRING_LITERALS'],
         }],
         [ 'debug_node=="true"', {
