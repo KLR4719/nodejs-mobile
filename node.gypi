@@ -380,11 +380,15 @@
           'defines': [ 'OPENSSL_API_COMPAT=0x10100000L', ],
           'dependencies': [
             './deps/openssl/openssl.gyp:openssl',
-
-            # For tests
-            './deps/openssl/openssl.gyp:openssl-cli',
           ],
           'conditions': [
+            [ 'OS not in "ios android"', {
+              'dependencies': [
+                # Not needed for iOS and Android, doesn't build
+                # For tests
+                './deps/openssl/openssl.gyp:openssl-cli',
+              ],
+            }],
             # -force_load or --whole-archive are not applicable for
             # the static library
             [ 'force_load=="true"', {
