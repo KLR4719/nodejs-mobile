@@ -247,7 +247,8 @@
           },],
           ['OS == "android"', {
             'cflags': [ '-fPIC', '-I<(android_ndk_path)/sources/android/cpufeatures' ],
-            'ldflags': [ '-fPIC' ]
+            # nodejs-mobile: starting Nov 2025, the play store requires a 16kb page size alignment
+            'ldflags': [ '-fPIC', '-Wl,-z,max-page-size=16384' ]
           }],
           ['clang==1', {
             'msbuild_toolset': 'ClangCL',
