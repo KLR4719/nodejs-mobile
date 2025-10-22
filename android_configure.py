@@ -55,7 +55,7 @@ else:
 print("\033[92mInfo: \033[0m" + "Configuring for " + DEST_CPU + "...")
 
 if platform.system() == "Darwin":
-    host_os = "darwin"
+    host_os = "mac"
     toolchain_path = android_ndk_path + "/toolchains/llvm/prebuilt/darwin-x86_64"
 
 elif platform.system() == "Linux":
@@ -71,6 +71,7 @@ GYP_DEFINES += " v8_target_arch=" + arch
 GYP_DEFINES += " android_target_arch=" + arch
 GYP_DEFINES += " host_os=" + host_os + " OS=android"
 GYP_DEFINES += " android_ndk_path=" + android_ndk_path
+GYP_DEFINES += " android_ndk_sysroot=" + toolchain_path + "/sysroot"
 os.environ['GYP_DEFINES'] = GYP_DEFINES
 
 if os.path.exists("./configure"):
