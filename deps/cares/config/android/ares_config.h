@@ -124,8 +124,11 @@
 /* Define to 1 if you have the getrandom function. */
 #define HAVE_GETRANDOM
 
+// nodejs-mobile patch: wrap with ifndef __ANDROID__
 /* Define to 1 if you have the getservbyport_r function. */
-/* #undef HAVE_GETSERVBYPORT_R */
+#ifndef __ANDROID__
+#define HAVE_GETSERVBYPORT_R 1
+#endif
 
 /* Define to 1 if you have the getservbyname_r function. */
 /* #undef HAVE_GETSERVBYNAME_R */
