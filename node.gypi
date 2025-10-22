@@ -439,5 +439,10 @@
     }, {
       'defines': [ 'HAVE_AMARO=0' ]
     }],
+    [ 'OS=="android" or OS=="ios"', {
+      'defines': [
+        'NODE_MOBILE',
+      ],
+    }],
   ],
 }
