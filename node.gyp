@@ -731,8 +731,13 @@
             }],
           ],
           }, {
-          'sources': [
-            'src/node_snapshot_stub.cc'
+          # nodejs-mobile patch: `conditions`>`not` added to wrap `sources`
+          'conditions': [
+            [ 'not (node_target_type=="static_library" and OS=="ios")', {
+              'sources': [
+                'src/node_snapshot_stub.cc'
+              ],
+            }],
           ],
         }],
         [ 'OS in "linux freebsd openharmony" and '
@@ -896,6 +901,12 @@
           'defines': [ 'NODE_BUILTIN_MODULES_PATH="<(node_builtin_modules_path)"' ]
         }],
         [ 'node_shared=="true"', {
+          'sources': [
+            'src/node_snapshot_stub.cc',
+          ]
+        }],
+        # nodejs-mobile patch:
+        [ 'node_target_type=="static_library" and OS=="ios"', {
           'sources': [
             'src/node_snapshot_stub.cc',
           ]
@@ -1205,6 +1216,12 @@
       'sources': [ '<@(node_cctest_sources)' ],
 
       'conditions': [
+        # nodejs-mobile patch: added this whole `not` block
+        [ 'not (node_target_type=="static_library" and OS=="ios")', {
+          'sources': [
+            'src/node_snapshot_stub.cc',
+          ]
+        }],
         [ 'node_use_openssl=="true"', {
           'defines': [
             'HAVE_OPENSSL=1',
@@ -1404,7 +1421,7 @@
       'defines': [ 'NODE_WANT_INTERNALS=1' ],
 
       'sources': [
-        'src/node_snapshot_stub.cc',
+        # nodejs-mobile patch: moved `node_snapshot_stub.cc` to the `not` below
         'tools/snapshot/node_mksnapshot.cc',
       ],
 
@@ -1415,6 +1432,12 @@
       },
 
       'conditions': [
+        # nodejs-mobile patch: added this whole `not` block
+        [ 'not (node_target_type=="static_library" and OS=="ios")', {
+          'sources': [
+            'src/node_snapshot_stub.cc',
+          ]
+        }],
         ['node_write_snapshot_as_array_literals=="true"', {
           'defines': [ 'NODE_MKSNAPSHOT_USE_ARRAY_LITERALS=1' ],
         }],
