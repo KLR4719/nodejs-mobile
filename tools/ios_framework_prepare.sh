@@ -64,6 +64,10 @@ build_for_arm64_device() {
     --dest-os=ios \
     --dest-cpu=arm64 \
     --with-intl=none \
+    --without-inspector \
+    --without-npm \
+    --without-corepack \
+    --without-sqlite \
     --cross-compiling \
     --enable-static \
     --openssl-no-asm \
