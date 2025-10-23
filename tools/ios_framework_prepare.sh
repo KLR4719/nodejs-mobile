@@ -193,20 +193,21 @@ build_framework_for_x64_simulator() {
 }
 
 combine_frameworks() {
+  # NOTE: Currently disabled because x64 simulator doesn't build
   # Join both simulator outputs into one
-  mkdir -p $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework
-  cp -r $FRAMEWORK_TARGET_DIR/iphonesimulator-arm64/Release-iphonesimulator/NodeMobile.framework/* \
-    $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework/
-  lipo -create \
-    $FRAMEWORK_TARGET_DIR/iphonesimulator-arm64/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
-    $FRAMEWORK_TARGET_DIR/iphonesimulator-x64/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
-    -output $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework/NodeMobile
+  # mkdir -p $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework
+  # cp -r $FRAMEWORK_TARGET_DIR/iphonesimulator-arm64/Release-iphonesimulator/NodeMobile.framework/* \
+    # $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework/
+  # lipo -create \
+    # $FRAMEWORK_TARGET_DIR/iphonesimulator-arm64/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
+    # $FRAMEWORK_TARGET_DIR/iphonesimulator-x64/Release-iphonesimulator/NodeMobile.framework/NodeMobile \
+    # -output $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework/NodeMobile
 
   # Create a .xcframework combining both iphoneos and iphonesimulator
   XCFRAMEWORK=$FRAMEWORK_TARGET_DIR/NodeMobile.xcframework
   xcodebuild -create-xcframework \
     -framework $FRAMEWORK_TARGET_DIR/iphoneos-arm64/Release-iphoneos/NodeMobile.framework \
-    -framework $FRAMEWORK_TARGET_DIR/iphonesimulator-universal/NodeMobile.framework \
+    -framework $FRAMEWORK_TARGET_DIR/iphonesimulator-arm64/Release-iphonesimulator/NodeMobile.framework \
     -output $XCFRAMEWORK
 
   echo "Framework built: $XCFRAMEWORK"
