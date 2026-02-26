@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [main, icu]
   pull_request:
-    branches: [main]
+    branches: [main, icu]
 
 env:
   SCCACHE_GHA_ENABLED: 'true'
