@@ -1,0 +1,63 @@
+name: Android v8m Build
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-v8m:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      
+      - name: Set up Android NDK
+        uses: android-actions/setup-ndk@v2
+        with:
+          ndk-version: r21e
+      
+      - name: Set up build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            python3 \
+            git \
+            curl
+      
+      - name: Build v8m (ARMv7)
+        run: |
+          export ANDROID_NDK_HOME=$ANDROID_NDK_HOME
+          cd android
+          ./build_v8m.sh
+        env:
+          ARCH: armeabi-v7a
+          V8_VERSION: v8m
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: android-v8m-build
+          path: android/build/output/
+          retention-days: 30
+      
+      - name: Create Release
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          files: android/build/output/**/*
+          tag_name: v8m-${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
